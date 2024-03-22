@@ -12,7 +12,7 @@ io.on("connection", (socket) => {
   //singnaling
   socket.on("join-room", (data) => {
     const { roomId, emailId } = data;
-    console.log("user", emailId, "joined room");
+    console.log("user", emailId, "joined room", socket.id, roomId);
     emailToSocketMapping.set(emailId, socket.id);
     socketToEmailMapping.set(socket.id, emailId);
     socket.join(roomId);
