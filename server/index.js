@@ -17,19 +17,23 @@ io.on("connection", (socket) => {
     socketToEmailMapping.set(socket.id, emailId);
     socket.join(roomId);
     socket.emit("joined-room", { roomId });
+    console.log("joined-room", roomId);
     socket.broadcast.to(roomId).emit("user-joined", { emailId });
   });
 
   socket.on("call-user", (data) => {
     const { emailId, offer } = data;
+    console.log("call-user", emailId, offer);
     const fromEmail = socketToEmailMapping.get(socket.id);
     const socketId = emailToSocketMapping.get(emailId);
     socket.to(socketId).emit("incomming-call", { from: fromEmail, offer });
+    console.log("incomming-call", fromEmail, offer);
   });
 
   socket.on("call-accepted", (data) => {
-    const { emailId, answer } = data;
-    const socketId = emailToSocketMapping.get(emailId);
+    const { email, answer } = data;
+    const socketId = emailToSocketMapping.get(email);
+    console.log("call-accepted", socketId, answer);
     socket.to(socketId).emit("call-accepted", { answer });
   });
 });
